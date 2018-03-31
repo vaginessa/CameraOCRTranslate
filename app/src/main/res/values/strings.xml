@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">CameraTranslate</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">Start Now</string>
+
+    <string name="slide_1_title">Camera Scanner!</string>
+    <string name="slide_1_desc">The easiest way to scan anything!</string>
+
+    <string name="slide_2_title">Translate</string>
+    <string name="slide_2_desc">Translate any text</string>
+
+    <string name="slide_3_title">Save words to favorite</string>
+    <string name="slide_3_desc">Save words to favorite and share it with your friends!</string>
+
+
+
+
+</resources>
