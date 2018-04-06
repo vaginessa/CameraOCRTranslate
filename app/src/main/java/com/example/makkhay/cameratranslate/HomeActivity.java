@@ -1,5 +1,6 @@
 package com.example.makkhay.cameratranslate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -130,6 +131,9 @@ public class HomeActivity extends AppCompatActivity
         }   else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(getApplicationContext(),About.class);
+            startActivity(intent);
+
 
         }
 

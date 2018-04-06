@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/bg" />
+                android:src="@drawable/bg_red" />
 
 
             <android.support.v7.widget.Toolbar
@@ -49,16 +49,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginBottom="220dp"
+
         >
-        <TextView
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/random"
-            />
+            android:layout_height="match_parent">
 
-
-
+        </android.support.v7.widget.RecyclerView>
 
 
 

@@ -3,6 +3,7 @@
     package="com.example.makkhay.cameratranslate">
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".Util.Application"
         android:allowBackup="true"
@@ -28,6 +29,10 @@
         <activity
             android:name=".OcrCaptureActivity"
             android:label="@string/title_activity_ocr_capture"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".About"
+            android:label="@string/title_activity_about"
             android:theme="@style/AppTheme"></activity>
     </application>
 
