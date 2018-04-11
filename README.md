@@ -2,7 +2,7 @@
 An app that can scan images and translate it 
 
 # What's CameraTranslate? 
-The main idea is to extract text from an image using camera. 
+The main idea is to extract text from an image using OCR. 
 
 # Sprint 1 Plan 
 ### TODO
