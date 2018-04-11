@@ -20,7 +20,6 @@
     <dimen name="text_margin_very_small">4dp</dimen>
 
 
-
     <dimen name="main_card_margin_horizontal">7dp</dimen>
     <dimen name="main_card_margin_vertical">2dp</dimen>
     <dimen name="main_card_margin_horizontal_big_activity">8dp</dimen>

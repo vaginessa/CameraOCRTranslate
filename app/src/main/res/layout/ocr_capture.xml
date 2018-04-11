@@ -18,4 +18,6 @@
             android:layout_height="match_parent" />
 
     </com.example.makkhay.cameratranslate.UI.OcrUiHelper.CameraSourcePreview>
+
+
 </LinearLayout>

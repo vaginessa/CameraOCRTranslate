@@ -1,10 +1,8 @@
 package com.example.makkhay.cameratranslate;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.makkhay.cameratranslate.Util.ItemtouchHelperCallback;
 import com.example.makkhay.cameratranslate.Util.RecyclerViewAdapter;
@@ -36,6 +35,9 @@ public class Favorite extends Fragment {
     private boolean loading;
     private TextView favText;
 
+    TextView txtData;
+
+
     public Favorite(){
 
     }
@@ -47,15 +49,9 @@ public class Favorite extends Fragment {
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
         favText = v.findViewById(R.id.tv_recycler_item_1);
 
+
         initData();
         initView(v);
-//        String value = getArguments().getString("YourKey");
-//        if (value != null){
-//            //Retrieve the value
-//
-//        favText.setText(value);
-//    }
-
 
 
 
@@ -64,18 +60,39 @@ public class Favorite extends Fragment {
         return  v;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        txtData = view.findViewById(R.id.txtData);
+
+
+
+    }
+
+
+    protected void displayReceivedData(String message)
+    {
+
+        txtData.setText(message);
+        Toast.makeText(getContext(),"rec:" + message,Toast.LENGTH_SHORT).show();
+    }
+
+
 
     @Override
     public void onAttach(Context context) {
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         super.onAttach(context);
+
     }
 
     @Override
     public void onDetach() {
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         super.onDetach();
+
     }
 
 

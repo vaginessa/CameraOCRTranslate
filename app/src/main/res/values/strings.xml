@@ -47,5 +47,6 @@
     <string name="about_card1_message">Hey there, I am Prakash, nice meeting you </string>
     <string name="contact_me">If you like this app then feel free to contact me</string>
     <string name="editText_hint">Type or use the camera</string>
+    <string name="title_activity_card">Card</string>
 
 </resources>
