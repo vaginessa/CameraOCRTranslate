@@ -18,6 +18,10 @@ package com.example.makkhay.cameratranslate.UI.OcrUiHelper;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -52,6 +56,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
     private float mHeightScaleFactor = 1.0f;
     private int mFacing = CameraSource.CAMERA_FACING_BACK;
     private Set<T> mGraphics = new HashSet<>();
+    Paint paint;
 
     /**
      * Base class for a custom graphics object to be rendered within the graphic overlay.  Subclass
@@ -199,13 +204,15 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
 
         synchronized (mLock) {
             if ((mPreviewWidth != 0) && (mPreviewHeight != 0)) {
-                mWidthScaleFactor = (float) canvas.getWidth() / (float) mPreviewWidth;
+                mWidthScaleFactor = (float) canvas.getWidth()  / (float) mPreviewWidth;
                 mHeightScaleFactor = (float) canvas.getHeight() / (float) mPreviewHeight;
             }
 
             for (Graphic graphic : mGraphics) {
                 graphic.draw(canvas);
             }
+
+
         }
     }
 }

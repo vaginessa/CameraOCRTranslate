@@ -1,11 +1,13 @@
 package com.example.makkhay.cameratranslate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,13 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.SendMessage{
 
 //    ImageButton cameraButton, locationButton, micButton;
 //    @BindView(R.id.cameraButton) ImageButton cameraButton;
@@ -28,21 +29,26 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    Toast.makeText(getApplicationContext(),"Home clicked",Toast.LENGTH_LONG).show();
                     selectedFragment = new HomeFragment();
+
+
                     break;
-                case R.id.navigation_notifications:
-                    Toast.makeText(getApplicationContext(),"fav clicked",Toast.LENGTH_LONG).show();
+                case R.id.navigation_favorite:
                     selectedFragment = new Favorite();
+                    Toast.makeText(getApplicationContext()," in fav",Toast.LENGTH_SHORT).show();
+
+
                     break;
             }
 
@@ -60,6 +66,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
 
@@ -128,8 +135,13 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         }   else if (id == R.id.nav_manage) {
+            Intent i = new Intent(getApplicationContext(), Card.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(getApplicationContext(),About.class);
+            startActivity(intent);
+
 
         }
 
@@ -137,5 +149,30 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+    @Override
+    public void sendData(String message) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Favorite f = (Favorite) fragmentManager.findFragmentById(R.id.favFragment);
+
+
+        if( f!=null ){
+            Toast.makeText(getApplicationContext()," Home is initialized",Toast.LENGTH_SHORT).show();
+            f.displayReceivedData(message);
+
+        }
+
+
+//        if (f!= null ) {
+//            Toast.makeText(getApplicationContext()," got to send data",Toast.LENGTH_SHORT).show();
+////            f.displayReceivedData(message);
+//        }
+    }
+
+
+
 
 }
