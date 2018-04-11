@@ -9,7 +9,7 @@ The main idea is to extract text from an image using camera.
 - Week 1:
 - [x] Create an onbording screen 
 - [x] Design main screens and layouts 
-- [ ] Work with the Camera 
-- [ ] Start working on OCR open source library for text extraction 
+- [x] Work with the Camera 
+- [x] Start working on OCR open source library for text extraction 
 - Week 2:  
 - [ ] Continue working on OCR and try to get it done by this week. 
