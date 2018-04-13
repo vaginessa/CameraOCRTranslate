@@ -12,6 +12,10 @@ The main idea is to extract text from an image using OCR.
 - [x] Work with the Camera 
 - [x] Start working on OCR open source library for text extraction 
 - Week 2:  
-- [ ] Continue working on OCR and try to get it done by this week. 
+- [x] Continue working on OCR and try to get it done by this week. 
 - [ ] Update the listview to recyclerview 
 - [ ] fetch the data in a dynamic way 
+
+# Sprint 2 plan 
+- Week 3:
+- [ ] Make camera scan same like oxford dictionary  
