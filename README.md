@@ -13,3 +13,5 @@ The main idea is to extract text from an image using OCR.
 - [x] Start working on OCR open source library for text extraction 
 - Week 2:  
 - [ ] Continue working on OCR and try to get it done by this week. 
+- [ ] Update the listview to recyclerview 
+- [ ] fetch the data in a dynamic way 
