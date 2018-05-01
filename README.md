@@ -23,14 +23,14 @@ The main idea is to extract text from an image using OCR.
 # Sprint 3 Plan: 
 ### TODOS
 
-- ripple effect when bottom navigation is switched ( see google play store view pager tab)
-- change the theme with settings 
-- make the showcase view background little nicer 
-- remove the '[]' from the output 
-- translate it when user stops typing or press backbitten 
-- make RecyclerView items deletable by id 
-- sorting 
-- make camera screen more nicer ( look dictionary and yonder app for this) 
-- put learn these words inside the favorite 
+[ ] ripple effect when bottom navigation is switched ( see google play store view pager tab)
+[ ] change the theme with settings 
+[ ] make the showcase view background little nicer 
+[ ] remove the '[]' from the output 
+[ ] translate it when user stops typing or press backbitten 
+[ ] make RecyclerView items deletable by id 
+[ ] sorting 
+[ ] make camera screen more nicer ( look dictionary and yonder app for this) 
+[ ] put learn these words inside the favorite 
 
 
