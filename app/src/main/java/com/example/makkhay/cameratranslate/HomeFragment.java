@@ -5,10 +5,14 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,21 +28,30 @@ import android.widget.Toast;
 
 import com.example.makkhay.cameratranslate.RetroFit.api.model.WordHelper;
 import com.example.makkhay.cameratranslate.RetroFit.api.service.RetroFitHelper;
+import com.example.makkhay.cameratranslate.Util.Application;
 import com.example.makkhay.cameratranslate.Util.ButtonAnimateUtil;
 import com.example.makkhay.cameratranslate.Util.CardModel;
 import com.example.makkhay.cameratranslate.Util.Dictionary;
+
+import com.example.makkhay.cameratranslate.Util.Prefs;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.gson.Gson;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.functions.Action1;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,13 +65,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private Button clearButton, favButton, shareButton, translate;
     private EditText cameraText;
     private TextView outputTV;
-    String data = "lado kha mug randiko ban";
     private final static String language1 = "en-es";
     private final static String language2 = "en-fr";
     private  String languageSelector;
+    private ShowcaseView showcaseView;
+    private int counter = 0;
+    private Prefs prefs;
 
 
-    SendMessage SM;
 
 
     @Override
@@ -86,7 +100,62 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         locationButton.setOnClickListener(this);
         translate.setOnClickListener(this);
 
+
+
+
         outputTV.setText("This is just a test");
+
+        cameraText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                handler.removeCallbacks(input_finish_checker);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    last_text_edit = System.currentTimeMillis();
+                    handler.postDelayed(input_finish_checker, delay);
+                } else {
+
+                }
+            }
+        });
+
+
+        SharedPreferences settings= getContext().getSharedPreferences("prefs",0);
+        boolean firstRun=settings.getBoolean("firstRun",false);
+        if(!firstRun)//if running for first time
+        //Splash will load for first time
+        {
+            showcaseView = new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(v.findViewById(R.id.cameraButton)))
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            animateShowCase();
+                        }
+                    })
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .build();
+            showcaseView.setButtonText(getString(R.string.next));
+            showcaseView.setContentTitle("Camera");
+            showcaseView.setContentText("Click this button to open your camera and scan");
+            SharedPreferences.Editor editor=settings.edit();
+            editor.putBoolean("firstRun",true);
+            editor.apply();
+
+        }
+
+
+
+
 
         //get the spinner from the xml.
         final Spinner dropdown = v.findViewById(R.id.spinner);
@@ -155,14 +224,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+//        animateShowCase();
+
 
         switch (v.getId()) {
             case R.id.cameraButton:
                 // launch Ocr capture activity.
                 Intent intent = new Intent(getActivity().getApplicationContext(), OcrCaptureActivity.class);
                 intent.putExtra(OcrCaptureActivity.AutoFocus, true);
-//                intent.putExtra(OcrCaptureActivity.UseFlash);
-
                 startActivityForResult(intent, RC_OCR_CAPTURE);
                 break;
 
@@ -170,8 +239,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 //clear text
                 cameraText.setText("");
                 ButtonAnimateUtil.animateButton(v);
-
-                // en -fr
                 break;
 
             case R.id.translate:
@@ -211,13 +278,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
+
+
+
     }
 
     private void saveToFavorite() {
         String cardTitle = cameraText.getText().toString();
         String cardMeaning = outputTV.getText().toString();
-
-
 
         SharedPreferences pref = getContext().getSharedPreferences("lado", Context.MODE_PRIVATE);
         CardModel words = new CardModel();
@@ -239,46 +307,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("word", new Gson().toJson(dictionary));
-        editor.commit();
+        editor.apply();
 
 
     }
-
-
-    //    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        favButton = view.findViewById(R.id.favButton);
-//
-//        favButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SM.sendData("lado kha mug  randi");
-//                ButtonAnimateUtil.animateButton(v);
-//                favButton.setBackgroundResource(R.drawable.ic_favorite_red_12dp);
-//            }
-//        });
-//
-//    }
-//
-//
-//
-    interface SendMessage {
-        void sendData(String message);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            SM = (SendMessage) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Error in retrieving data. Please try again");
-        }
-    }
-
 
     private void speechToText() {
         // passing an intent of recognize speech
@@ -315,29 +347,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void translateLanguage( String language) {
         String url1 = "https://translate.yandex.net/";
-
-
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(url1)
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
-
         RetroFitHelper client = retrofit.create(RetroFitHelper.class);
-
         String englishToNepali = cameraText.getText().toString();
 
-
         Call<WordHelper> call = client.findMeaning(language, englishToNepali);
-
-
         call.enqueue(new Callback<WordHelper>() {
 
 
             @Override
             public void onResponse(Call<WordHelper> call, Response<WordHelper> response) {
                 List<String> res = response.body().getText();
-                outputTV.setText(res.toString());
+                String output = res.toString();
+                output = output.replace("[", "");
+                String finalText = output;
+                finalText = finalText.replace("]","");
+                outputTV.setText(finalText);
             }
 
             @Override
@@ -347,4 +376,72 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
+
+    private void setAlpha(float alpha, View... views) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            for (View view : views) {
+                view.setAlpha(alpha);
+            }
+        }
+
+
+
+
+
+    }
+
+
+//    private void launchShowCaseView(View v){
+//        showcaseView = new ShowcaseView.Builder(getActivity())
+//                .setTarget(new ViewTarget(v.findViewById(R.id.cameraButton)))
+//                .setOnClickListener(this)
+//                .setStyle(R.style.CustomShowcaseTheme3)
+//                .build();
+//        showcaseView.setButtonText(getString(R.string.next));
+//        showcaseView.setContentTitle("Camera");
+//        showcaseView.setContentText("Click this button to open your camera and scan");
+//
+//    }
+
+
+    private void animateShowCase(){
+        switch (counter) {
+            case 0:
+                showcaseView.setShowcase(new ViewTarget(micButton), true);
+                showcaseView.setContentTitle("Mic use");
+                showcaseView.setContentText("Use Your Mic to input the text that you want to convert");
+                break;
+
+            case 1:
+                showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentTitle("All Set");
+                showcaseView.setContentText("Enjoy the App ");
+                showcaseView.setButtonText("close");
+                setAlpha(0.4f, cameraButton, micButton, translate);
+                break;
+
+            case 2:
+                showcaseView.hide();
+                setAlpha(1.0f, cameraButton, micButton, translate);
+                break;
+        }
+        counter++;
+
+
+    }
+
+    long delay = 1000; // 1 seconds after user stops typing
+    long last_text_edit = 0;
+
+    Handler handler = new Handler();
+
+    private Runnable input_finish_checker = new Runnable() {
+        public void run() {
+            if (System.currentTimeMillis() > (last_text_edit + delay - 500)) {
+                translateLanguage(languageSelector);
+            }
+        }
+    };
+
 }

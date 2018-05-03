@@ -1,6 +1,7 @@
 package com.example.makkhay.cameratranslate;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.SendMessage{
+        implements NavigationView.OnNavigationItemSelectedListener{
 
 //    ImageButton cameraButton, locationButton, micButton;
 //    @BindView(R.id.cameraButton) ImageButton cameraButton;
@@ -28,36 +29,35 @@ public class HomeActivity extends AppCompatActivity
 //    @BindView(R.id.micButton) ImageButton micButton;
 
 
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
-
-            Fragment selectedFragment = null;
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    selectedFragment = new HomeFragment();
-
-
-                    break;
-                case R.id.navigation_favorite:
-                    selectedFragment = new Favorite();
-                    Toast.makeText(getApplicationContext()," in fav",Toast.LENGTH_SHORT).show();
-
-
-                    break;
-            }
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.app_bar,
-                    selectedFragment).commit();
-
-            return true;
-        }
-    };
+//    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+//            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+//
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//
+//
+//
+//            Fragment selectedFragment = null;
+//            switch (item.getItemId()) {
+//                case R.id.navigation_home:
+//                    selectedFragment = new HomeFragment();
+//
+//
+//                    break;
+//                case R.id.navigation_favorite:
+//                    selectedFragment = new Favorite();
+//                    Toast.makeText(getApplicationContext()," in fav",Toast.LENGTH_SHORT).show();
+//
+//
+//                    break;
+//            }
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.app_bar,
+//                    selectedFragment).commit();
+//
+//            return true;
+//        }
+//    };
 
 
     @Override
@@ -80,8 +80,43 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+       final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+
+         BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+                = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        selectedFragment = new HomeFragment();
+                        navigation.setBackgroundColor(getResources().getColor(R.color.colorBlack));
+
+
+
+                        break;
+                    case R.id.navigation_favorite:
+                        selectedFragment = new Favorite();
+                         navigation.setBackgroundColor(getResources().getColor(R.color.main_background));
+
+                        break;
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.app_bar,
+                        selectedFragment).commit();
+
+                return true;
+            }
+        };
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
 
         //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
@@ -152,25 +187,12 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-    @Override
-    public void sendData(String message) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Favorite f = (Favorite) fragmentManager.findFragmentById(R.id.favFragment);
-
-
-        if( f!=null ){
-            Toast.makeText(getApplicationContext()," Home is initialized",Toast.LENGTH_SHORT).show();
-            f.displayReceivedData(message);
-
-        }
-
 
 //        if (f!= null ) {
 //            Toast.makeText(getApplicationContext()," got to send data",Toast.LENGTH_SHORT).show();
 ////            f.displayReceivedData(message);
 //        }
-    }
+
 
 
 

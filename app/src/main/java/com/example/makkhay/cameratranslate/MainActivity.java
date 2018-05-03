@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        // Checking for first time launch - before calling setContentView()
-//        prefs = Application.getApp().getPrefs();
-//        if (!prefs.isFirstTimeLaunch()) {
-//            launchHomeScreen();
-//            finish();
-//        }
+        // Checking for first time launch - before calling setContentView()
+        prefs = Application.getApp().getPrefs();
+        if (!prefs.isFirstTimeLaunch()) {
+            launchHomeScreen();
+            finish();
+        }
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-//        prefs.setFirstTimeLaunch(false);
+        prefs.setFirstTimeLaunch(false);
         startActivity(new Intent(MainActivity.this, HomeActivity.class));
         finish();
     }

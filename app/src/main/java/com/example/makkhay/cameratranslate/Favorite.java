@@ -1,6 +1,7 @@
 package com.example.makkhay.cameratranslate;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,11 +18,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.makkhay.cameratranslate.Util.CardModel;
+import com.example.makkhay.cameratranslate.Util.Dictionary;
 import com.example.makkhay.cameratranslate.Util.ItemtouchHelperCallback;
 import com.example.makkhay.cameratranslate.Util.RecyclerViewAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class Favorite extends Fragment {
@@ -37,6 +43,9 @@ public class Favorite extends Fragment {
 
     TextView txtData;
 
+    List<String> list;
+
+
 
     public Favorite(){
 
@@ -50,7 +59,21 @@ public class Favorite extends Fragment {
         favText = v.findViewById(R.id.tv_recycler_item_1);
 
 
-        initData();
+
+        SharedPreferences pref = getContext().getSharedPreferences("lado", MODE_PRIVATE);
+
+        list = new ArrayList<>();
+        Gson gson = new Gson();
+        Dictionary dictionary = gson.fromJson(pref.getString("word", ""), Dictionary.class);
+        if (dictionary != null)
+            for (CardModel words : dictionary.getWordsList()) {
+                list.add(words.getTitle() + "\n \n\n" + words.getMeaning());
+            }
+
+
+
+        System.out.println(list);
+
         initView(v);
 
 
@@ -60,23 +83,6 @@ public class Favorite extends Fragment {
         return  v;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        txtData = view.findViewById(R.id.txtData);
-
-
-
-    }
-
-
-    protected void displayReceivedData(String message)
-    {
-
-        txtData.setText(message);
-        Toast.makeText(getContext(),"rec:" + message,Toast.LENGTH_SHORT).show();
-    }
 
 
 
@@ -96,15 +102,7 @@ public class Favorite extends Fragment {
     }
 
 
-    private void initData() {
-        data = new ArrayList<>();
-//        for (int i = 1; i <= 6; i++) {
-//            data.add(i + "");
-//        }
 
-
-        insertData = "0";
-    }
 
     private void initView(View v) {
         mRecyclerView = v.findViewById(R.id.recycler_view_recycler_view);
@@ -120,16 +118,24 @@ public class Favorite extends Fragment {
             mRecyclerView.setLayoutManager(linearLayoutManager);
         }
 
-        adapter = new RecyclerViewAdapter(getContext());
+        adapter = new RecyclerViewAdapter(getContext(),list);
         mRecyclerView.setAdapter(adapter);
-        adapter.setItems(data);
-        adapter.addFooter();
+//        adapter.setItems(list);
+//        adapter.addFooter();
+
 
 
 
         ItemTouchHelper.Callback callback = new ItemtouchHelperCallback(adapter);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "card is clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }

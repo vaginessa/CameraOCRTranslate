@@ -4,14 +4,16 @@
     android:id="@+id/card_view_item_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:layout_marginEnd="2dp"
-    android:layout_marginStart="2dp"
-    android:layout_marginTop="2dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginEnd="6dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginTop="11dp"
     android:background="@color/colorWhite"
     android:foreground="?attr/selectableItemBackground"
-    card_view:cardCornerRadius="@dimen/card_recycler_corner_radius"
-    card_view:cardElevation="@dimen/card_recycler_elevation">
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="2dp"
+
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,8 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/text_margin"
-            android:background="@drawable/ic_mic_white_24dp"
-            android:backgroundTint="@color/gray_very_light"
+            android:background="@drawable/ic_bookmark_black_12dp"
             android:transitionName="shareView"
             card_view:targetApi="lollipop"
             android:layout_marginEnd="@dimen/text_margin" />

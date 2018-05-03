@@ -1,9 +1,11 @@
 package com.example.makkhay.cameratranslate;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.example.makkhay.cameratranslate.Util.CardAdapter;
 import com.example.makkhay.cameratranslate.Util.CardModel;
@@ -27,6 +29,11 @@ public class Card extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+
         swipeCardsView =  findViewById(R.id.swipCardsView);
         swipeCardsView.retainLastCard(true);
         swipeCardsView.enableSwipe(true);
@@ -39,7 +46,7 @@ public class Card extends AppCompatActivity {
         Dictionary dictionary = gson.fromJson(pref.getString("word", ""), Dictionary.class);
         if (dictionary != null)
             for (CardModel words : dictionary.getWordsList()) {
-                modelList.add( new CardModel(words.getMeaning(),words.getTitle(), "https://avatars.githubusercontent.com/makkhay"));
+                modelList.add( new CardModel(words.getMeaning(),words.getTitle(), "https://i.imgur.com/1Ls9n51.png"));
                 CardAdapter cardAdapter = new CardAdapter(modelList,this);
                 swipeCardsView.setAdapter(cardAdapter);
             }
@@ -80,5 +87,24 @@ public class Card extends AppCompatActivity {
 //
 //        adapter.notifyDataSetChanged();
 //    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // for back button
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

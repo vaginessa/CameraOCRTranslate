@@ -1,6 +1,7 @@
 package com.example.makkhay.cameratranslate.Util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.makkhay.cameratranslate.R;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements onMoveAndSwipedListener {
@@ -29,9 +35,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int TYPE_FOOTER = 2;
     private final String FOOTER = "footer";
 
-    public RecyclerViewAdapter(Context context) {
+    public RecyclerViewAdapter(Context context, List<String> items) {
         this.context = context;
-        mItems = new ArrayList();
+        mItems = items;
     }
 
     public void setItems(List<String> data) {
@@ -76,10 +82,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof RecyclerViewHolder) {
             final RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
 
-
             AlphaAnimation aa1 = new AlphaAnimation(1.0f, 0.1f);
             aa1.setDuration(400);
-            recyclerViewHolder.rela_round.startAnimation(aa1);
+
+            ((RecyclerViewHolder) holder).recyclerTV.setText(mItems.get(position));
 
             AlphaAnimation aa = new AlphaAnimation(0.1f, 1.0f);
             aa.setDuration(400);
@@ -94,15 +100,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        String s = mItems.get(position);
-        if (s.equals(FOOTER)) {
-            return TYPE_FOOTER;
-        } else {
-            return TYPE_NORMAL;
-        }
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+//        String s = mItems.get(position);
+//        if (s.equals(FOOTER)) {
+//            return TYPE_FOOTER;
+//        } else {
+//            return TYPE_NORMAL;
+//        }
+//    }
 
     @Override
     public int getItemCount() {
@@ -120,7 +126,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onItemDismiss(final int position) {
         mItems.remove(position);
-        notifyItemRemoved(position);
+
+         notifyItemRemoved(position);
+        Toast.makeText(context,"Item clicked",Toast.LENGTH_SHORT).show();
 
 //        Snackbar.make(parentView, context.getString(R.string.item_swipe_dismissed), Snackbar.LENGTH_SHORT)
 //                .setAction(context.getString(R.string.item_swipe_undo), new View.OnClickListener() {
@@ -135,11 +143,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private class RecyclerViewHolder extends RecyclerView.ViewHolder {
         private View mView;
         private RelativeLayout rela_round;
+        private TextView recyclerTV;
 
         private RecyclerViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             rela_round = itemView.findViewById(R.id.rela_round);
+            recyclerTV = itemView.findViewById(R.id.tv_recycler_item_1);
+
         }
     }
 
