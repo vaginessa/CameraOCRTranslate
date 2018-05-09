@@ -22,7 +22,7 @@ An app that can scan images and translate it
 
 ## Demo and Screenshots
 <div style={{display: flex; flex-direction: row}}>
-  <img src="Screenshots/1.png" width="270" />
+  <img src="ScreenShots/1.png" width="270" />
   <img src="Screenshots/Signup.png" width="270" />
   <img src="Screenshots/login.png" width="270" />
 </div>
