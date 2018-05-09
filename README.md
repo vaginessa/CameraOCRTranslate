@@ -58,5 +58,19 @@ An app that can scan images and translate it
 - [ ] make RecyclerView items deletable by id 
 - [x] make camera screen more nicer ( look dictionary and yonder app for this) 
 
+## Getting started
+
+```
+git clone https://github.com/makkhay/CameraTranslate2.git
+
+Open it using android studio and run on the emulator 
+```
+
+
+
+## Feedback
+
+In case you have any feedback or questions, feel free to open a new issues on this repo or reach out to me [**@makkhay**](https://github.com/makkhay) on Github. Thanks
+
 
 
