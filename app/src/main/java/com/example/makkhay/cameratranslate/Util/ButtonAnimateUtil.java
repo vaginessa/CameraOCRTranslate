@@ -4,12 +4,16 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Helper class to animate button onClick
  */
 
+
+
 public final class ButtonAnimateUtil {
+
 
     public static void animateButton(View v) {
         Animator scale = ObjectAnimator.ofPropertyValuesHolder(v,
@@ -19,4 +23,9 @@ public final class ButtonAnimateUtil {
         scale.setDuration(1000);
         scale.start();
     }
+
+
+
+
+
 }

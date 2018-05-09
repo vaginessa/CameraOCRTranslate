@@ -1,11 +1,20 @@
 package com.example.makkhay.cameratranslate;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.makkhay.cameratranslate.Util.CardAdapter;
 import com.example.makkhay.cameratranslate.Util.CardModel;
@@ -29,6 +38,7 @@ public class CardActivity extends AppCompatActivity {
     private SharedPreferences pref;
 
     String loadsPosition;
+    ImageView leftButton, rightButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +50,40 @@ public class CardActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        leftButton = findViewById(R.id.leftButton);
+        rightButton = findViewById(R.id.rightButton);
+
 
         swipeCardsView = findViewById(R.id.swipCardsView);
         swipeCardsView.retainLastCard(true);
         swipeCardsView.enableSwipe(true);
+
+        swipeCardsView.setCardsSlideListener(new SwipeCardsView.CardsSlideListener() {
+            @Override
+            public void onShow(int index) {
+            }
+
+            @Override
+            public void onCardVanish(int index, SwipeCardsView.SlideType type) {
+                switch (type) {
+                    case LEFT:
+                        animateLeft();
+                        break;
+                    case RIGHT:
+                        animateRight();
+                        break;
+                }
+            }
+
+            @Override
+            public void onItemClick(View cardImageView, int index) {
+            }
+        });
+
+
+
         loadsPosition = getIntent().getStringExtra("loadsPosition");
+
 
         pref = getSharedPreferences("lado", MODE_PRIVATE);
 
@@ -76,5 +115,56 @@ public class CardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void animateLeft(){
+        final Animation leftAnim = AnimationUtils.loadAnimation(getBaseContext(),R.anim.rotate);
+        leftButton.startAnimation(leftAnim);
+
+        leftAnim.setAnimationListener(new Animation.AnimationListener() {
+
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+              leftButton.setImageResource(R.drawable.right_wink);
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                leftButton.setImageResource(R.drawable.baseline_arrow_back_ios_black_48dp);
+
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
+
+
+    }
+
+
+    private void animateRight(){
+        final Animation rightAnim = AnimationUtils.loadAnimation(getBaseContext(),R.anim.rotate_right);
+        rightButton.startAnimation(rightAnim);
+
+        rightAnim.setAnimationListener(new Animation.AnimationListener() {
+
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+                rightButton.setImageResource(R.drawable.left_48dp);
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                rightButton.setImageResource(R.drawable.baseline_arrow_forward_ios_black_48dp);
+
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
+
+
+    }
+
+
 
 }

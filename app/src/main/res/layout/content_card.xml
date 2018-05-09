@@ -14,13 +14,13 @@
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="33dp"
+        android:layout_height="43dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="24dp"
         android:background="#f3f3f3"
         android:gravity="center"
-        android:text="Swipe left and right to view your saved words"
-        android:textStyle="bold"
+        android:text="Swipe left and right to learn saved words"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/swipCardsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,8 @@
         android:id="@+id/swipCardsView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginBottom="64dp"
         android:background="#f3f3f3"
         app:alphaOffsetStep="40"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,10 +44,34 @@
 
     </com.huxq17.swipecardsview.SwipeCardsView>
 
+    <ImageView
+        android:id="@+id/rightButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="344dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="344dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_forward_ios_black_48dp" />
 
-
-
-
+    <ImageView
+        android:id="@+id/leftButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="269dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="269dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_ios_black_48dp" />
 
 
 </android.support.constraint.ConstraintLayout>
