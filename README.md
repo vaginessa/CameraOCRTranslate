@@ -45,18 +45,19 @@ An app that can scan images and translate it
 - [x] Start working on OCR open source library for text extraction 
 - Week 2:  
 - [x] Continue working on OCR and try to get it done by this week. 
-- [ ] Update the listview to recyclerview 
 - [x] fetch the data in a dynamic way 
 
 # Sprint 2 - 3 Plan: 
 ### TODOS
 
-- [ ] ripple effect when bottom navigation is switched ( see google play store view pager tab)
 - [x] make the showcase view background little nicer 
 - [x] remove the '[]' from the output 
 - [x] translate it when user stops typing or press backbitten 
+- [x] make camera screen more nicer ( look dictionary and yandex app for this)
+- [x] Translate the text on tap 
+- [x] Add animation when card is swiped
+- [ ] ripple effect when bottom navigation is switched ( see google play store view pager tab)
 - [ ] make RecyclerView items deletable by id 
-- [x] make camera screen more nicer ( look dictionary and yonder app for this) 
 
 ## Getting started
 
