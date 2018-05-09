@@ -1,8 +1,31 @@
+
+<h3 align="center">
+CameraTranslate app
+</h3>
+
+
 # CameraTranslate app 
 An app that can scan images and translate it 
 
 # What's CameraTranslate? 
-The main idea is to extract text from an image using OCR. 
+- An app that can scan images and translate words to another language
+- The main idea is to extract text from an image using OCR. 
+
+## Functionality
+- Users can scan using camera and extract text. 
+- Once you tap the text, It will be automatically converted 
+- Double tapping will send the selected text to different screen
+- Users can save the words for future use
+- Users can share the words to social medias
+- Users can use speech to text for translation
+- Users can memorize saved words using swipecards 
+
+## Demo and Screenshots
+<div style={{display: flex; flex-direction: row}}>
+  <img src="Screenshots/1.png" width="270" />
+  <img src="Screenshots/Signup.png" width="270" />
+  <img src="Screenshots/login.png" width="270" />
+</div>
 
 # Sprint 1 Plan 
 ### TODO
@@ -14,13 +37,9 @@ The main idea is to extract text from an image using OCR.
 - Week 2:  
 - [x] Continue working on OCR and try to get it done by this week. 
 - [ ] Update the listview to recyclerview 
-- [ ] fetch the data in a dynamic way 
+- [x] fetch the data in a dynamic way 
 
-# Sprint 2 plan 
-- Week 3:
-- [ ] Make camera scan same like oxford dictionary  
-
-# Sprint 3 Plan: 
+# Sprint 2 - 3 Plan: 
 ### TODOS
 
 - [ ] ripple effect when bottom navigation is switched ( see google play store view pager tab)
