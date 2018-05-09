@@ -1,5 +1,9 @@
 package com.example.makkhay.cameratranslate.Util;
 
+/**
+ * helper class to keep track of sharedPref
+ */
+
 public class Application extends android.app.Application {
 
     private Prefs prefs;

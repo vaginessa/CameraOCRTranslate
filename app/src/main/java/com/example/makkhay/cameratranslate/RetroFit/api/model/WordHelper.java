@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WordHelper  {
+public class WordHelper {
     @SerializedName("code")
     @Expose
     private Integer code;

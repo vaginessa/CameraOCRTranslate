@@ -16,7 +16,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-public class About extends AppCompatActivity implements View.OnClickListener {
+/**
+ * This class is responsible for displaying about me page. User can view about developer's info
+ */
+
+
+public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -61,20 +66,14 @@ public class About extends AppCompatActivity implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.ll_card_about_2_shop:
-//                intent.setData(Uri.parse(Constant.APP_URL));
-//                intent.setAction(Intent.ACTION_VIEW);
-//                startActivity(intent);
                 break;
 
             case R.id.ll_card_about_2_email:
-//                intent.setAction(Intent.ACTION_SENDTO);
-//                intent.setData(Uri.parse(Constant.EMAIL));
-//                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.about_email_intent));
-//                //intent.putExtra(Intent.EXTRA_TEXT, "Hi,");
+
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
-//                    Toast.makeText(AboutActivity.this, getString(R.string.about_not_found_email), Toast.LENGTH_SHORT).show();
+
                 }
                 break;
 
@@ -84,7 +83,7 @@ public class About extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intent);
     }
 
@@ -99,8 +98,6 @@ public class About extends AppCompatActivity implements View.OnClickListener {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
 }

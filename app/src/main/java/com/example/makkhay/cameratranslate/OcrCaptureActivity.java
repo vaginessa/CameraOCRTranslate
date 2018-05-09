@@ -25,41 +25,52 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
+import com.example.makkhay.cameratranslate.RetroFit.api.model.WordHelper;
+import com.example.makkhay.cameratranslate.RetroFit.api.service.RetroFitHelper;
 import com.example.makkhay.cameratranslate.UI.OcrUiHelper.CameraSource;
 import com.example.makkhay.cameratranslate.UI.OcrUiHelper.CameraSourcePreview;
 import com.example.makkhay.cameratranslate.UI.OcrUiHelper.GraphicOverlay;
 import com.example.makkhay.cameratranslate.Util.OCRUtility.OcrDetectorProcessor;
 import com.example.makkhay.cameratranslate.Util.OCRUtility.OcrGraphic;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 
 import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Activity for the multi-tracker app.  This app detects text and displays the value with the
@@ -87,7 +98,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
+    private OcrDetectorProcessor ocrDetectorProcessor;
 
+    TextView textView, translatedText, clearResult;
+    private final static String language1 = "en-es";
+    private final static String language2 = "en-fr";
+    private String languageSelector;
 
 
     /**
@@ -99,6 +115,46 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.ocr_capture);
+
+        textView = findViewById(R.id.cameraText);
+        translatedText = findViewById(R.id.translatedText);
+        clearResult = findViewById(R.id.clearResult);
+
+        clearResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView.setText(R.string.Ocr_TV);
+                translatedText.setText(R.string.Ocr_translated_text);
+                Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //get the spinner from the xml.
+        final Spinner dropdown = findViewById(R.id.cameraSpinner);
+        //create a list of items for the spinner.
+        final String[] items = new String[]{"Spanish", "French"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, items);
+        //set the spinners adapter to the previously created one.
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected = dropdown.getSelectedItem().toString();
+
+                if (dropdown.getSelectedItemPosition() == 0) {
+                    languageSelector = language1;
+                } else {
+                    languageSelector = language2;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
@@ -113,7 +169,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
         final boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
-
 
 
         Log.d(TAG, "onCreate: lado after: " + useFlash);
@@ -134,9 +189,25 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         Snackbar.make(mGraphicOverlay, "Tap to Capture.",
                 Snackbar.LENGTH_INDEFINITE)
                 .show();
+//        onScan();
     }
 
+    /**
+     * output text onScan
+     *
+     * @param rawX
+     * @param rawY
+     */
 
+    private void onScan(float rawX, float rawY) {
+
+        OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
+        TextBlock text = null;
+        if (graphic != null) {
+            text = graphic.getTextBlock();
+            textView.setText(text.getValue());
+        }
+    }
 
 
     /**
@@ -184,7 +255,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * Creates and starts the camera.  Note that this uses a higher resolution in comparison
      * to other detection examples to enable the ocr detector to detect small text samples
      * at long distances.
-     *
+     * <p>
      * Suppressing InlinedApi since there is a check that the minimum version is met before using
      * the constant.
      */
@@ -294,7 +365,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "Camera permission granted - initialize the camera source");
             // We have permission, so create the camerasource
-            boolean autoFocus = getIntent().getBooleanExtra(AutoFocus,false);
+            boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
             boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
             createCameraSource(autoFocus, useFlash);
             return;
@@ -351,6 +422,22 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * @return true if the activity is ending.
      */
     private boolean onTap(float rawX, float rawY) {
+
+        OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
+        TextBlock text = null;
+        if (graphic != null) {
+            text = graphic.getTextBlock();
+            textView.setText(text.getValue());
+            translateLanguage(languageSelector);
+        } else {
+            Log.d(TAG, "no text detected");
+        }
+        return text != null;
+
+
+    }
+
+    private boolean onTapDouble(float rawX, float rawY) {
         OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
         TextBlock text = null;
         if (graphic != null) {
@@ -360,16 +447,15 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 data.putExtra(TextBlockObject, text.getValue());
                 setResult(CommonStatusCodes.SUCCESS, data);
                 finish();
-            }
-            else {
+            } else {
                 Log.d(TAG, "text data is null");
             }
-        }
-        else {
-            Log.d(TAG,"no text detected");
+        } else {
+            Log.d(TAG, "no text detected");
         }
         return text != null;
     }
+
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -377,7 +463,14 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         public boolean onSingleTapConfirmed(MotionEvent e) {
             return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
         }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+
+            return onTapDouble(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
+        }
     }
+
 
     private class ScaleListener implements ScaleGestureDetector.OnScaleGestureListener {
 
@@ -435,7 +528,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intent);
     }
 
@@ -449,6 +542,39 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void translateLanguage(String language) {
+        String url1 = "https://translate.yandex.net/";
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(url1)
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+        RetroFitHelper client = retrofit.create(RetroFitHelper.class);
+        String englishToNepali = textView.getText().toString();
+
+        Call<WordHelper> call = client.findMeaning(language, englishToNepali);
+        call.enqueue(new Callback<WordHelper>() {
+
+
+            @Override
+            public void onResponse(Call<WordHelper> call, Response<WordHelper> response) {
+                List<String> res = response.body().getText();
+                String output = res.toString();
+                output = output.replace("[", "");
+                String finalText = output;
+                finalText = finalText.replace("]", "");
+                translatedText.setText(finalText);
+            }
+
+            @Override
+            public void onFailure(Call<WordHelper> call, Throwable t) {
+
+                Toast.makeText(getApplicationContext(), "Failed, something happened!!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

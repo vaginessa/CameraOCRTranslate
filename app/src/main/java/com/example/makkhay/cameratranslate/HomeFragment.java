@@ -67,12 +67,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView outputTV;
     private final static String language1 = "en-es";
     private final static String language2 = "en-fr";
-    private  String languageSelector;
+    private String languageSelector;
     private ShowcaseView showcaseView;
     private int counter = 0;
     private Prefs prefs;
-
-
 
 
     @Override
@@ -91,7 +89,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         translate = v.findViewById(R.id.translate);
 
 
-
         cameraButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
@@ -99,8 +96,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         micButton.setOnClickListener(this);
         locationButton.setOnClickListener(this);
         translate.setOnClickListener(this);
-
-
 
 
         outputTV.setText("This is just a test");
@@ -129,9 +124,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
 
-        SharedPreferences settings= getContext().getSharedPreferences("prefs",0);
-        boolean firstRun=settings.getBoolean("firstRun",false);
-        if(!firstRun)//if running for first time
+        SharedPreferences settings = getContext().getSharedPreferences("prefs", 0);
+        boolean firstRun = settings.getBoolean("firstRun", false);
+        if (!firstRun)//if running for first time
         //Splash will load for first time
         {
             showcaseView = new ShowcaseView.Builder(getActivity())
@@ -147,14 +142,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             showcaseView.setButtonText(getString(R.string.next));
             showcaseView.setContentTitle("Camera");
             showcaseView.setContentText("Click this button to open your camera and scan");
-            SharedPreferences.Editor editor=settings.edit();
-            editor.putBoolean("firstRun",true);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("firstRun", true);
             editor.apply();
 
         }
-
-
-
 
 
         //get the spinner from the xml.
@@ -170,11 +162,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected = dropdown.getSelectedItem().toString();
-                 if(dropdown.getSelectedItemPosition() == 0){
-                     languageSelector = language1;
-                 } else {
-                     languageSelector =language2;
-                 }
+                if (dropdown.getSelectedItemPosition() == 0) {
+                    languageSelector = language1;
+                } else {
+                    languageSelector = language2;
+                }
 
             }
 
@@ -194,7 +186,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
-//                    statusMessage.setText(R.string.ocr_success);
                     cameraText.setText(text);
                     Log.d(TAG, "Text read: " + text);
                 } else {
@@ -229,6 +220,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.cameraButton:
+
+                Toast.makeText(getContext(), "Camera Opening", Toast.LENGTH_SHORT).show();
                 // launch Ocr capture activity.
                 Intent intent = new Intent(getActivity().getApplicationContext(), OcrCaptureActivity.class);
                 intent.putExtra(OcrCaptureActivity.AutoFocus, true);
@@ -277,8 +270,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 break;
         }
-
-
 
 
     }
@@ -345,7 +336,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void translateLanguage( String language) {
+    private void translateLanguage(String language) {
         String url1 = "https://translate.yandex.net/";
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(url1)
@@ -365,14 +356,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 String output = res.toString();
                 output = output.replace("[", "");
                 String finalText = output;
-                finalText = finalText.replace("]","");
+                finalText = finalText.replace("]", "");
                 outputTV.setText(finalText);
             }
 
             @Override
             public void onFailure(Call<WordHelper> call, Throwable t) {
 
-                Toast.makeText(getContext(),"Failed, something happened!!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed, something happened!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -384,9 +375,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 view.setAlpha(alpha);
             }
         }
-
-
-
 
 
     }
@@ -405,7 +393,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 //    }
 
 
-    private void animateShowCase(){
+    private void animateShowCase() {
         switch (counter) {
             case 0:
                 showcaseView.setShowcase(new ViewTarget(micButton), true);

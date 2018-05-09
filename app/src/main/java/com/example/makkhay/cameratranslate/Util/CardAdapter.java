@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CardAdapter  extends BaseCardAdapter{
+public class CardAdapter extends BaseCardAdapter {
 
     private List<CardModel> modelList;
     private Context context;
@@ -35,8 +35,8 @@ public class CardAdapter  extends BaseCardAdapter{
     @Override
     public void onBindData(int position, View cardview) {
 
-        if(modelList == null || modelList.size() == 0){
-            return ;
+        if (modelList == null || modelList.size() == 0) {
+            return;
         }
         ImageView imageView = cardview.findViewById(R.id.cardImage);
         TextView textView = cardview.findViewById(R.id.cardWord);

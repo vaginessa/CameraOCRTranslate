@@ -40,27 +40,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mItems = items;
     }
 
-    public void setItems(List<String> data) {
-        this.mItems.addAll(data);
-        notifyDataSetChanged();
-    }
-
-    public void addItem(int position, String insertData) {
-        mItems.add(position, insertData);
-        notifyItemInserted(position);
-    }
-
-    public void addItems(List<String> data) {
-        mItems.addAll(data);
-        notifyItemInserted(mItems.size() - 1);
-    }
-
-    public void addFooter() {
-        mItems.add(FOOTER);
-        notifyItemInserted(mItems.size() - 1);
-    }
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         parentView = parent;
@@ -91,7 +70,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             aa.setDuration(400);
 
 
-
             recyclerViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -99,16 +77,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
     }
-
-//    @Override
-//    public int getItemViewType(int position) {
-//        String s = mItems.get(position);
-//        if (s.equals(FOOTER)) {
-//            return TYPE_FOOTER;
-//        } else {
-//            return TYPE_NORMAL;
-//        }
-//    }
 
     @Override
     public int getItemCount() {
@@ -127,8 +95,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onItemDismiss(final int position) {
         mItems.remove(position);
 
-         notifyItemRemoved(position);
-        Toast.makeText(context,"Item clicked",Toast.LENGTH_SHORT).show();
+        notifyItemRemoved(position);
+        Toast.makeText(context, "Item clicked", Toast.LENGTH_SHORT).show();
 
 //        Snackbar.make(parentView, context.getString(R.string.item_swipe_dismissed), Snackbar.LENGTH_SHORT)
 //                .setAction(context.getString(R.string.item_swipe_undo), new View.OnClickListener() {
@@ -153,7 +121,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
     }
-
 
 
 }

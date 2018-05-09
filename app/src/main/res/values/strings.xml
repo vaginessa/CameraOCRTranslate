@@ -48,5 +48,7 @@
     <string name="contact_me">If you like this app then feel free to contact me</string>
     <string name="editText_hint">Type or use the camera</string>
     <string name="title_activity_card">Card</string>
+    <string name="Ocr_translated_text">Translated Text will be displayed here</string>
+    <string name="Ocr_TV">Once you Tap the text, it will show up here</string>
 
 </resources>

@@ -46,8 +46,7 @@ public class Favorite extends Fragment {
     List<String> list;
 
 
-
-    public Favorite(){
+    public Favorite() {
 
     }
 
@@ -59,9 +58,7 @@ public class Favorite extends Fragment {
         favText = v.findViewById(R.id.tv_recycler_item_1);
 
 
-
         SharedPreferences pref = getContext().getSharedPreferences("lado", MODE_PRIVATE);
-
         list = new ArrayList<>();
         Gson gson = new Gson();
         Dictionary dictionary = gson.fromJson(pref.getString("word", ""), Dictionary.class);
@@ -70,25 +67,17 @@ public class Favorite extends Fragment {
                 list.add(words.getTitle() + "\n \n\n" + words.getMeaning());
             }
 
-
-
-        System.out.println(list);
-
         initView(v);
 
 
-
-
         // Inflate the layout for this fragment
-        return  v;
+        return v;
     }
-
-
 
 
     @Override
     public void onAttach(Context context) {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         super.onAttach(context);
 
@@ -96,12 +85,10 @@ public class Favorite extends Fragment {
 
     @Override
     public void onDetach() {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         super.onDetach();
 
     }
-
-
 
 
     private void initView(View v) {
@@ -118,14 +105,8 @@ public class Favorite extends Fragment {
             mRecyclerView.setLayoutManager(linearLayoutManager);
         }
 
-        adapter = new RecyclerViewAdapter(getContext(),list);
+        adapter = new RecyclerViewAdapter(getContext(), list);
         mRecyclerView.setAdapter(adapter);
-//        adapter.setItems(list);
-//        adapter.addFooter();
-
-
-
-
         ItemTouchHelper.Callback callback = new ItemtouchHelperCallback(adapter);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -133,15 +114,12 @@ public class Favorite extends Fragment {
         mRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "card is clicked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "card is clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
 
     }
-
-
-
 
     private int getScreenWidthDp() {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

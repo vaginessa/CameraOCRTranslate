@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dictionary implements Serializable{
+/**
+ * Helper class to save the words to favorite
+ */
+
+public class Dictionary implements Serializable {
     public List<CardModel> wordsList = new ArrayList<>();
 
 

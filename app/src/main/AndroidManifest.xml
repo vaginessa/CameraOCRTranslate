@@ -17,7 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Design.NoActionBar">
+            android:theme="@style/Theme.Design.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,11 +34,11 @@
             android:label="@string/title_activity_ocr_capture"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".About"
+            android:name=".AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Card"
+            android:name=".CardActivity"
             android:label="@string/title_activity_card"
             android:theme="@style/AppTheme"></activity>
     </application>
