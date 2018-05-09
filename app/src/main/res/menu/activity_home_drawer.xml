@@ -4,24 +4,25 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-
 
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_book_black_18dp"
             android:title="Cards" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/baseline_account_circle_black_18dp"
+            android:title="About" />
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Credits">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_credit"
                 android:icon="@drawable/ic_info_black_18dp"
-                android:title="About" />
+                android:title="Credits" />
+
 
         </menu>
     </item>

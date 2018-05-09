@@ -7,6 +7,7 @@
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">Start Now</string>
+    <string name="close">Close</string>
 
     <string name="slide_1_title">Camera Scanner!</string>
     <string name="slide_1_desc">The easiest way to scan anything!</string>

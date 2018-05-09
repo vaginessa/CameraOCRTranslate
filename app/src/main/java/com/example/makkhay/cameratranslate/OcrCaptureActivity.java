@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -55,6 +56,8 @@ import com.example.makkhay.cameratranslate.UI.OcrUiHelper.GraphicOverlay;
 import com.example.makkhay.cameratranslate.Util.OCRUtility.OcrDetectorProcessor;
 import com.example.makkhay.cameratranslate.Util.OCRUtility.OcrGraphic;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -104,6 +107,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private final static String language1 = "en-es";
     private final static String language2 = "en-fr";
     private String languageSelector;
+    private ShowcaseView showcaseView;
 
 
     /**
@@ -128,6 +132,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Cleared", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
 
         //get the spinner from the xml.
         final Spinner dropdown = findViewById(R.id.cameraSpinner);
