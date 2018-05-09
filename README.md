@@ -1,7 +1,9 @@
 
-<h3 align="center">
-CameraTranslate app
-</h3>
+<p align="center">
+  <a href="https://github.com/makkhay/CameraTranslate2">
+    <img alt="daug" src="https://github.com/makkhay/CameraTranslate2/blob/master/ScreenShots/camera_icon.png" width="250">
+  </a>
+</p>
 
 
 # CameraTranslate app 
