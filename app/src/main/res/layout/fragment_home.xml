@@ -324,6 +324,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
+                            android:paddingBottom="16dp"
                             android:orientation="vertical">
 
                             <Button
@@ -332,6 +333,23 @@
                                 android:layout_height="48dp"
                                 android:layout_marginTop="2dp"
                                 android:background="@drawable/ic_share_black_12dp"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/copyButton"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/baseline_file_copy_black_36dp"
                                 />
 
                         </LinearLayout>

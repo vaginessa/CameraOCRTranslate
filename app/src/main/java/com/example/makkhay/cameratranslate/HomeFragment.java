@@ -2,7 +2,10 @@ package com.example.makkhay.cameratranslate;
 
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -62,7 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final int RC_OCR_CAPTURE = 9003;
     private final int REQ_CODE = 100;
     private ImageButton cameraButton, locationButton, micButton;
-    private Button clearButton, favButton, shareButton, translate;
+    private Button clearButton, favButton, shareButton, translate, copyButton;
     private EditText cameraText;
     private TextView outputTV;
     private final static String language1 = "en-es";
@@ -87,6 +91,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         micButton = v.findViewById(R.id.micButton);
         locationButton = v.findViewById(R.id.locationButton);
         translate = v.findViewById(R.id.translate);
+        copyButton = v.findViewById(R.id.copyButton);
 
 
         cameraButton.setOnClickListener(this);
@@ -96,6 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         micButton.setOnClickListener(this);
         locationButton.setOnClickListener(this);
         translate.setOnClickListener(this);
+        copyButton.setOnClickListener(this);
 
 
         outputTV.setText("This is just a test");
@@ -264,14 +270,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 ButtonAnimateUtil.animateButton(v);
                 speechToText();
                 break;
+
+            case R.id.copyButton:
+                ButtonAnimateUtil.animateButton(v);
+                copyToClipBoard();
+                break;
             case R.id.locationButton:
-                Toast.makeText(getContext(), "You are in: " +
-                        getCountryBasedOnSimCardOrNetwork(getContext()), Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getContext());
+                }
+                builder.setTitle(" Looks like you are in " +  getCountryBasedOnSimCardOrNetwork(getContext()))
+                        .setMessage("Would You like to set the primary language to English ?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                Toast.makeText(getContext(), "Primary Language set to English",Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
 
                 break;
         }
 
 
+    }
+
+    private void copyToClipBoard() {
+
+        String text = outputTV.getText().toString();
+
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getContext(), "Text - " + text + " - has been copied to your clipboard",Toast.LENGTH_SHORT).show();
     }
 
     private void saveToFavorite() {
@@ -344,9 +385,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         Retrofit retrofit = builder.build();
         RetroFitHelper client = retrofit.create(RetroFitHelper.class);
-        String englishToNepali = cameraText.getText().toString();
+        String translateLanguage = cameraText.getText().toString();
 
-        Call<WordHelper> call = client.findMeaning(language, englishToNepali);
+        Call<WordHelper> call = client.findMeaning(language, translateLanguage);
         call.enqueue(new Callback<WordHelper>() {
 
 
