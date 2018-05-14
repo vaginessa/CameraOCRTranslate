@@ -58,7 +58,6 @@ An app that can scan images and translate it
 - [x] make camera screen more nicer ( look dictionary and yandex app for this)
 - [x] Translate the text on tap 
 - [x] Add animation when card is swiped
-- [ ] ripple effect when bottom navigation is switched ( see google play store view pager tab)
 - [ ] make RecyclerView items deletable by id 
 
 ## Getting started
